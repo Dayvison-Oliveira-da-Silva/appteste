@@ -1,130 +1,550 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Teste PWA – Shelf Pass</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f766e">
+    <meta charset="UTF-8">
+    <title>Cadastro Shelf Pass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-    :root {
-      --bg: #020617;
-      --card: #020617;
-      --text: #e5e7eb;
-      --accent: #22c1b0;
-    }
+    <style>
+        :root {
+            --bg: #f4f5f7;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-soft: #6b7280;
+            --primary: #0f766e;
+            --primary-soft: #22c1b0;
+            --border: #d1d5db;
+            --error: #dc2626;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #e0f7f5 0, var(--bg) 45%);
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            color: var(--text);
+            padding: 0px 16px;
+        }
+         /* Chrome, Edge, Safari */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #0f766e, #020617 55%);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 16px;
-    }
+        /* Firefox */
+        html,
+        body {
+            scrollbar-width: none;
+        }
 
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: var(--card);
-      border-radius: 24px;
-      padding: 24px 22px 22px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.7);
-      position: relative;
-      overflow: hidden;
-    }
+        /* IE / Edge antigo */
+        html,
+        body {
+            -ms-overflow-style: none;
+        }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -60%;
-      background:
-        radial-gradient(circle at 0 0, rgba(34,193,176,.16), transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(56,189,248,.22), transparent 55%);
-      opacity: .7;
-      pointer-events: none;
-      z-index: -1;
-    }
+        .shell {
+            width: 100%;
+            max-width: 480px;
+        }
 
-    h1 {
-      font-size: 1.6rem;
-      margin-bottom: 8px;
-    }
+        .card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 26px 22px 22px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.15);
+            border: 1px solid rgba(148, 163, 184, .28);
+        }
 
-    p {
-      font-size: .9rem;
-      opacity: .9;
-      margin-bottom: 18px;
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
 
-    button {
-      width: 100%;
-      border-radius: 999px;
-      border: none;
-      padding: 12px;
-      background: linear-gradient(135deg, #0f766e, #22c1b0);
-      color: #f9fafb;
-      font-weight: 600;
-      font-size: .95rem;
-      cursor: pointer;
-      box-shadow: 0 12px 25px rgba(15,118,110,.35);
-    }
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: rgba(15, 118, 110, .05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
 
-    .status {
-      margin-top: 14px;
-      font-size: .8rem;
-      opacity: .9;
-    }
-  </style>
+        .brand-logo img {
+            width: 120%;
+            max-width: none;
+        }
+
+        .brand-text small {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            color: var(--text-soft);
+        }
+
+        .brand-text strong {
+            font-size: 1.05rem;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            margin: 0 0 4px;
+        }
+
+        p.subtitle {
+            margin: 0 0 18px;
+            font-size: .9rem;
+            color: var(--text-soft);
+        }
+
+        .stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .field label {
+            font-size: .8rem;
+            color: var(--text-soft);
+        }
+
+        .field input {
+            padding: 11px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: .9rem;
+            outline: none;
+            transition: border .15s ease, box-shadow .15s ease;
+        }
+
+        .field input:focus {
+            border-color: var(--primary-soft);
+            box-shadow: 0 0 0 1px rgba(34, 193, 176, .35);
+        }
+
+        .field input[readonly] {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 999px;
+            border: none;
+            padding: 12px;
+            margin-top: 6px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-soft));
+            color: #f9fafb;
+            font-weight: 600;
+            font-size: .95rem;
+            cursor: pointer;
+            box-shadow: 0 12px 25px rgba(15, 118, 110, .35);
+            transition: transform .1s ease, box-shadow .1s ease, opacity .1s;
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 8px 18px rgba(15, 118, 110, .3);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            border-radius: 999px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            background: #fff;
+            font-size: .9rem;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .helper {
+            margin-top: 16px;
+            font-size: .78rem;
+            text-align: center;
+            color: var(--text-soft);
+        }
+
+        .helper a {
+            color: var(--primary-soft);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-msg {
+            margin-top: 8px;
+            font-size: .8rem;
+            color: var(--error);
+        }
+
+        .info-msg {
+            margin-top: 8px;
+            font-size: .8rem;
+            color: var(--text-soft);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Toggle CPF / CNPJ */
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doc-toggle {
+            display: inline-flex;
+            border-radius: 999px;
+            background: #e5e7eb;
+            padding: 2px;
+        }
+
+        .doc-toggle-btn {
+            border: none;
+            background: transparent;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: .75rem;
+            cursor: pointer;
+            color: #4b5563;
+        }
+
+        .doc-toggle-btn.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: 0 0 0 1px rgba(148, 163, 184, .5);
+        }
+    </style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>Shelf Pass – PWA teste</h1>
-    <p>
-      Se você está vendo esta página em 
-      <strong>https://dayvison-oliveira-da-silva.github.io/appteste/</strong>,
-      o próximo passo é instalar como app no seu celular ou PC.
-    </p>
-    <button onclick="alert('Aqui depois entra seu app de verdade. 🙂')">
-      Testar botão
-    </button>
-    <div class="status" id="pwa-status">
-      Verificando suporte a PWA...
+    <div class="shell">
+
+        <div class="card">
+            <a href="index.html" style="text-decoration: none; color: var(--text);">
+                ⟵ voltar
+            </a><br><br>
+
+            <div class="brand">
+                <div class="brand-logo">
+                    <img src="logo-shelf-med.png" alt="Shelf Dental Med">
+                </div>
+                <div class="brand-text">
+                    <small>Cadastro</small><br>
+                    <strong>Shelf Pass</strong>
+                </div>
+            </div>
+
+            <h1>Crie sua conta</h1>
+            <p class="subtitle">
+                Primeiro vamos conferir seu CPF/CNPJ para saber se você já possui cadastro na Shelf.
+            </p>
+
+            <!-- PASSO 1: CPF/CNPJ -->
+            <div id="step-cpf">
+                <div class="field">
+                    <div class="doc-header">
+                        <label id="docLabel" for="cpf">CPF</label>
+
+                        <div class="doc-toggle">
+                            <button type="button" class="doc-toggle-btn active" data-doc="cpf">CPF</button>
+                            <button type="button" class="doc-toggle-btn" data-doc="cnpj">CNPJ</button>
+                        </div>
+                    </div>
+
+                    <input type="text" id="cpf" maxlength="14" placeholder="000.000.000-00" inputmode="numeric">
+                </div>
+                <button class="btn-primary" id="btnCheckCpf">Continuar</button>
+                <div id="cpfError" class="error-msg hidden"></div>
+                <div id="cpfInfo" class="info-msg hidden"></div>
+            </div>
+
+            <!-- PASSO 2: DADOS PESSOAIS -->
+            <div id="step-form" class="hidden">
+                <p class="subtitle" style="margin-top:4px;">
+                    Não encontramos cadastro para este documento. Preencha seus dados para concluir o cadastro.
+                </p>
+
+                <div class="stack">
+                    <div class="field">
+                        <label for="cpfFinal" id="docLabelFinal">CPF</label>
+                        <input type="text" id="cpfFinal" readonly>
+                    </div>
+
+                    <div class="field">
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" placeholder="Seu nome">
+                    </div>
+
+                    <div class="field">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="voce@exemplo.com">
+                    </div>
+
+                    <div class="field">
+                        <label for="celular">Celular (WhatsApp)</label>
+                        <input type="tel" id="celular" placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+
+                <button class="btn-primary" id="btnCreateAccount">Finalizar cadastro</button>
+                <div id="formError" class="error-msg hidden"></div>
+                <div id="formInfo" class="info-msg hidden"></div>
+            </div>
+
+            <!-- mensagem quando já tiver cadastro -->
+            <div id="step-existing" class="hidden">
+                <p class="subtitle">
+                    Já existe um cadastro ativo para este CPF/CNPJ.
+                    Você pode acessar sua conta na área de login.
+                </p>
+                <button class="btn-primary" id="btnGoLogin">Ir para login</button>
+                <button class="btn-secondary" id="btnTryAnotherCpf">Usar outro documento</button>
+            </div>
+
+            <p class="helper">
+                Já é assinante? <a href="login.html">Acessar app</a>
+            </p>
+
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Registrar service worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => {
-            document.getElementById('pwa-status').textContent =
-              'Service Worker registrado. Este site já é um PWA básico. ✅';
-          })
-          .catch(err => {
-            document.getElementById('pwa-status').textContent =
-              'Falha ao registrar o Service Worker: ' + err;
-          });
-      });
-    } else {
-      document.getElementById('pwa-status').textContent =
-        'Este navegador não suporta Service Worker.';
-    }
-  </script>
+    <!-- ===== Firebase SDKs ===== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
+    <script>
+        
+
+        
+        // === CONFIGURE SEU PROJETO AQUI ===
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            projectId: "SEU_PROJETO",
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // --- helpers ---
+        function limparDocumento(str) {
+            return (str || '').replace(/\D/g, '');
+        }
+
+        function formatarDocumento(str, tipo) {
+            const s = limparDocumento(str);
+            if (tipo === 'cpf') {
+                if (s.length !== 11) return str;
+                return s.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            } else {
+                if (s.length !== 14) return str;
+                return s.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+            }
+        }
+
+        // elementos
+        const stepCpf = document.getElementById('step-cpf');
+        const stepForm = document.getElementById('step-form');
+        const stepExisting = document.getElementById('step-existing');
+
+        const cpfInput = document.getElementById('cpf');
+        const cpfFinal = document.getElementById('cpfFinal');
+        const cpfError = document.getElementById('cpfError');
+        const cpfInfo = document.getElementById('cpfInfo');
+
+        const nomeInput = document.getElementById('nome');
+        const emailInput = document.getElementById('email');
+        const celInput = document.getElementById('celular');
+        const formError = document.getElementById('formError');
+        const formInfo = document.getElementById('formInfo');
+
+        const docLabel = document.getElementById('docLabel');
+        const docLabelFinal = document.getElementById('docLabelFinal');
+        const docToggleBtns = document.querySelectorAll('.doc-toggle-btn');
+
+        let tipoDoc = 'cpf'; // padrão
+
+        function show(el) { el.classList.remove('hidden'); }
+        function hide(el) { el.classList.add('hidden'); }
+        function setText(el, text) { el.textContent = text; }
+
+        // === Toggle CPF / CNPJ ===
+        docToggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                docToggleBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                tipoDoc = btn.dataset.doc; // 'cpf' ou 'cnpj'
+
+                if (tipoDoc === 'cpf') {
+                    docLabel.textContent = 'CPF';
+                    docLabelFinal.textContent = 'CPF';
+                    cpfInput.placeholder = '000.000.000-00';
+                    cpfInput.maxLength = 14;
+                } else {
+                    docLabel.textContent = 'CNPJ';
+                    docLabelFinal.textContent = 'CNPJ';
+                    cpfInput.placeholder = '00.000.000/0000-00';
+                    cpfInput.maxLength = 18;
+                }
+
+                // limpa mensagens de erro ao trocar
+                hide(cpfError);
+                hide(cpfInfo);
+                cpfInput.value = '';
+            });
+        });
+
+        // === PASSO 1 – verificar documento ===
+        document.getElementById('btnCheckCpf').addEventListener('click', async () => {
+            hide(cpfError);
+            hide(cpfInfo);
+
+            const docLimpo = limparDocumento(cpfInput.value);
+
+            if (tipoDoc === 'cpf' && docLimpo.length !== 11) {
+                setText(cpfError, 'Informe um CPF válido com 11 dígitos.');
+                show(cpfError);
+                return;
+            }
+
+            if (tipoDoc === 'cnpj' && docLimpo.length !== 14) {
+                setText(cpfError, 'Informe um CNPJ válido com 14 dígitos.');
+                show(cpfError);
+                return;
+            }
+
+            try {
+                setText(cpfInfo, 'Verificando cadastro...');
+                show(cpfInfo);
+
+                const docRef = db.collection('users').doc(docLimpo);
+                const snap = await docRef.get();
+
+                hide(cpfInfo);
+
+                if (snap.exists) {
+                    // usuário já cadastrado
+                    show(stepExisting);
+                    hide(stepForm);
+                } else {
+                    // novo cadastro
+                    cpfFinal.value = formatarDocumento(docLimpo, tipoDoc);
+                    show(stepForm);
+                    hide(stepExisting);
+                }
+            } catch (err) {
+                console.error(err);
+                setText(cpfError, 'Ocorreu um erro ao consultar o documento. Tente novamente.');
+                show(cpfError);
+            }
+        });
+
+        // === quando já existe cadastro ===
+        document.getElementById('btnGoLogin').addEventListener('click', () => {
+            window.location.href = 'login.html';  // sua página de login
+        });
+
+        document.getElementById('btnTryAnotherCpf').addEventListener('click', () => {
+            cpfInput.value = '';
+            hide(stepExisting);
+            hide(stepForm);
+            show(stepCpf);
+        });
+
+        // === PASSO 2 – criar conta no Firestore ===
+        document.getElementById('btnCreateAccount').addEventListener('click', async () => {
+            hide(formError);
+            hide(formInfo);
+
+            const docLimpo = limparDocumento(cpfFinal.value);
+            const nome = (nomeInput.value || '').trim();
+            const email = (emailInput.value || '').trim();
+            const cel = (celInput.value || '').trim();
+
+            if (!nome || !email || !cel) {
+                setText(formError, 'Preencha todos os campos obrigatórios.');
+                show(formError);
+                return;
+            }
+
+            try {
+                setText(formInfo, 'Salvando seus dados...');
+                show(formInfo);
+
+                await db.collection('users').doc(docLimpo).set({
+                    cpf_cnpj: docLimpo,
+                    tipo_pessoa: tipoDoc, // 'cpf' ou 'cnpj'
+                    nome: nome,
+                    email: email,
+                    celular: cel,
+                    criado_em: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                setText(formInfo, 'Cadastro concluído com sucesso! Você já pode acessar o app.');
+                // Exemplo: redirecionar depois de alguns segundos
+                // setTimeout(() => window.location.href = 'login.html', 1500);
+            } catch (err) {
+                console.error(err);
+                hide(formInfo);
+                setText(formError, 'Não foi possível salvar seus dados. Tente novamente.');
+                show(formError);
+            }
+        });
+               // Máscara dinâmica para CPF ou CNPJ usando o MESMO input
+        cpfInput.addEventListener('input', () => {
+            let v = cpfInput.value.replace(/\D/g, '');   // só dígitos
+
+            if (tipoDoc === 'cpf') {
+                // CPF = 11 dígitos
+                if (v.length > 11) v = v.slice(0, 11);
+
+                if (v.length > 9) {
+                    v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+                } else if (v.length > 6) {
+                    v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+                } else if (v.length > 3) {
+                    v = v.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+                }
+            } else {
+                // CNPJ = 14 dígitos
+                if (v.length > 14) v = v.slice(0, 14);
+
+                if (v.length > 12) {
+                    // 00.000.000/0000-00
+                    v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/, '$1.$2.$3/$4-$5');
+                } else if (v.length > 8) {
+                    v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{1,4})/, '$1.$2.$3/$4');
+                } else if (v.length > 5) {
+                    v = v.replace(/(\d{2})(\d{3})(\d{1,3})/, '$1.$2.$3');
+                } else if (v.length > 2) {
+                    v = v.replace(/(\d{2})(\d{1,3})/, '$1.$2');
+                }
+            }
+
+            cpfInput.value = v;
+        });
+
+    </script>
 </body>
+
 </html>
