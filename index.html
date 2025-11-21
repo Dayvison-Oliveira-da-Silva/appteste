@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Cadastro Shelf Pass</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.json">
 
     <style>
         :root {
@@ -545,26 +546,8 @@
         });
 
     </script>
-    <script>
-    // Registrar service worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => {
-            document.getElementById('pwa-status').textContent =
-              'Service Worker registrado. Este site já é um PWA básico. ✅';
-          })
-          .catch(err => {
-            document.getElementById('pwa-status').textContent =
-              'Falha ao registrar o Service Worker: ' + err;
-          });
-      });
-    } else {
-      document.getElementById('pwa-status').textContent =
-        'Este navegador não suporta Service Worker.';
-    }
-  </script>
 </body>
 
 </html>
+
 
